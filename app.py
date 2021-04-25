@@ -1,7 +1,3 @@
-import streamlit as st
-import numpy as np
-import pandas as pd
-
 import streamlit as st 
 from PIL import Image
 
@@ -12,11 +8,8 @@ from tensorflow.keras.preprocessing.image import img_to_array
 
 def process_image(image):
 
-#   image = tf.image.decode_image(image, channels=3)
   image = tf.image.convert_image_dtype(image, tf.float32)
   image = tf.image.resize(image, size=[224, 224])
-
-  st.write(image.shape)
 
   return image
 
@@ -27,8 +20,6 @@ def create_data_batches(x, batch_size=BATCH_SIZE):
   data = np.array([process_image(x)])
   data = tf.data.Dataset.from_tensor_slices(data)
   data_batch = data.batch(BATCH_SIZE)
-
-  st.write(data_batch)
 
   return data_batch
 
@@ -60,14 +51,15 @@ if uploaded_file is not None:
         prep_image = create_data_batches(image)
         pred = model.predict(prep_image)
 
-        class_names = ['bald_eagle' 'black_bear' 'bobcat' 'canada_lynx'
- 'columbian_black-tailed_deer' 'cougar' 'coyote' 'deer' 'elk' 'gray_fox'
- 'gray_wolf' 'mountain_beaver' 'nutria' 'raccoon' 'raven' 'red_fox'
- 'ringtail' 'sea_lions' 'seals' 'virginia_opossum']
+        class_names = ['bald_eagle', 'black_bear', 'bobcat', 'canada_lynx',
+ 'columbian_black-tailed_deer', 'cougar', 'coyote', 'deer', 'elk','gray_fox',
+ 'gray_wolf', 'mountain_beaver', 'nutria', 'raccoon', 'raven', 'red_fox',
+ 'ringtail', 'sea_lions', 'seals', 'virginia_opossum']
 
-        st.write(pred)
-        st.write(np.argmax(pred, axis=1))
-        
+        label = np.argmax(pred, axis=1)
+
+        st.write(class_names[label[0]])
+
 
     
 
