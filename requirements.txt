@@ -2,3 +2,4 @@ streamlit
 tensorflow-cpu
 tensorflow_hub
 Pillow
+numpy
